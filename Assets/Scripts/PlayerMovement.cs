@@ -3,19 +3,29 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    [field: SerializeField, Min(0)]
-    public float Speed { get; set; } = 1.0f;
+    [SerializeField, Min(0)]
+    private float _speed = 1.0f;
 
     [SerializeField]
     private SpriteRenderer _sprite;
-    private bool _spriteFlipY;
 
-    private Rigidbody2D Rigidbody;
-    private Vector2 MovementDirection = new();
+    private bool _spriteFlipY;
+    private Rigidbody2D _rigidbody;
+    private Vector2 _movementDirection = new();
+
+    public float Speed
+    {
+        get => _speed;
+        set
+        {
+            Debug.Assert(value >= 0, "Speed must be a positive number.", this);
+            _speed = value;
+        }
+    }
 
     private void Awake()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
+        _rigidbody = GetComponent<Rigidbody2D>();
 
         if (_sprite)
         {
@@ -25,11 +35,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnValidate()
     {
-        Rigidbody = GetComponent<Rigidbody2D>();
-        if (!Rigidbody.isKinematic)
+        _rigidbody = GetComponent<Rigidbody2D>();
+        if (!_rigidbody.isKinematic)
         {
-            Rigidbody.bodyType = RigidbodyType2D.Kinematic;
-            Debug.Log(Rigidbody.name + " automatically set to kinematic.", Rigidbody);
+            _rigidbody.bodyType = RigidbodyType2D.Kinematic;
+            Debug.Log(_rigidbody.name + " automatically set to kinematic.", _rigidbody);
         }
 
         if (!_sprite)
@@ -42,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-        MovementDirection.Set(x, y);
+        _movementDirection.Set(x, y);
 
         if (_sprite && x != 0)
         {
@@ -53,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var newPosition = Rigidbody.position + MovementDirection * (Speed * Time.fixedDeltaTime);
-        Rigidbody.MovePosition(newPosition);
+        var newPosition = _rigidbody.position + _movementDirection * (Speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(newPosition);
     }
 }
