@@ -1,7 +1,4 @@
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting.Dependencies.NCalc;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(Camera))]
 public class FollowCamera : MonoBehaviour
@@ -67,12 +64,6 @@ public class FollowCamera : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector2 target = _focusTarget.position;
-        Vector2 current = transform.position;
-        Vector2 difference = current - target;
-
-        bool isTargetTooFar = Vector2.SqrMagnitude(difference) > MaxDistance * MaxDistance;
-
         var destination = CalculateNextDestination();
 
         var newPosition = transform.position;
