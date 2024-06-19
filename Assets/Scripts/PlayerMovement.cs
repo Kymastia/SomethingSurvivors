@@ -53,6 +53,7 @@ public class PlayerMovement : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         _movementDirection.Set(x, y);
+        _movementDirection.Normalize();
 
         if (_sprite && x != 0)
         {
