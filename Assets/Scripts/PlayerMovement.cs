@@ -3,29 +3,25 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField, Min(0)]
-    private float _speed = 1.0f;
+    [SerializeField]
+    private float _speed = 1.5f;
 
     [SerializeField]
     private SpriteRenderer _sprite;
 
     private bool _spriteFlipY;
     private Rigidbody2D _rigidbody;
-    private Vector2 _movementDirection = new();
-
-    public float Speed
-    {
-        get => _speed;
-        set
-        {
-            Debug.Assert(value >= 0, "Speed must be a positive number.", this);
-            _speed = value;
-        }
-    }
+    private Vector2 _inputDirection;
+    private Locomotion _locomotion;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody2D>();
+        _locomotion = new(
+            _speed,
+            () => _rigidbody.position,
+            _rigidbody.MovePosition
+        );
 
         if (_sprite)
         {
@@ -46,14 +42,19 @@ public class PlayerMovement : MonoBehaviour
         {
             _sprite = GetComponentInChildren<SpriteRenderer>(true);
         }
+
+        if (_locomotion is not null)
+        {
+            _locomotion.Speed = _speed;
+        }
     }
 
     private void Update()
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-        _movementDirection.Set(x, y);
-        _movementDirection.Normalize();
+        _inputDirection.Set(x, y);
+        _inputDirection.Normalize();
 
         if (_sprite && x != 0)
         {
@@ -64,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var newPosition = _rigidbody.position + _movementDirection * (Speed * Time.fixedDeltaTime);
-        _rigidbody.MovePosition(newPosition);
+        _locomotion.MoveDirection(_inputDirection, Time.fixedDeltaTime);
     }
 }
