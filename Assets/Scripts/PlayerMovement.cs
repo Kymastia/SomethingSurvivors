@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _spriteFlipY;
     private Rigidbody2D _rigidbody;
-    private Vector2 _movementDirection;
+    private Vector2 _inputDirection;
     private Locomotion _locomotion;
 
     private void Awake()
@@ -53,8 +53,8 @@ public class PlayerMovement : MonoBehaviour
     {
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
-        _movementDirection.Set(x, y);
-        _movementDirection.Normalize();
+        _inputDirection.Set(x, y);
+        _inputDirection.Normalize();
 
         if (_sprite && x != 0)
         {
@@ -65,9 +65,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-        _locomotion.MoveTowards(
-            _movementDirection + (Vector2)transform.position,
-            Time.fixedDeltaTime
-        );
+        _locomotion.MoveDirection(_inputDirection, Time.fixedDeltaTime);
     }
 }
