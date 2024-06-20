@@ -6,15 +6,15 @@ public class Mob : MonoBehaviour
     private float _speed = 1.0f;
 
     private Transform _target;
+    private Locomotion _locomotion;
 
-    public float Speed
+    private void Awake()
     {
-        get => _speed;
-        set
-        {
-            Debug.Assert(value >= 0, "Speed must be a positive number.", this);
-            _speed = value;
-        }
+        _locomotion = new(
+            _speed,
+            () => transform.position,
+            position => transform.position = position
+        );
     }
 
     public void SetTarget(Transform transform)
@@ -29,13 +29,7 @@ public class Mob : MonoBehaviour
             return;
         }
 
-        var position = Vector3.MoveTowards(
-            transform.position,
-            _target.position,
-            Speed * Time.fixedDeltaTime
-        );
-
-        transform.position = position;
+        _locomotion.MoveTowards(_target.position, Time.fixedDeltaTime);
     }
 
     [ContextMenu("Chase Player")]
