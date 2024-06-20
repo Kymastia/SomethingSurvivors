@@ -94,6 +94,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4563511394353173461}
+  - component: {fileID: 9095566059454631936}
   m_Layer: 0
   m_Name: Mob
   m_TagString: Untagged
@@ -117,6 +118,19 @@ Transform:
   - {fileID: 8119667807066025954}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9095566059454631936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6301616013824581342}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 317ddb489b7fa1e45ab695ca52ade7a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speed: 1
 --- !u!1 &6441895166042469940
 GameObject:
   m_ObjectHideFlags: 0
