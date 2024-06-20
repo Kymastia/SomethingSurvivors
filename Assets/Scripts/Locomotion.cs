@@ -1,10 +1,8 @@
 using System;
 using UnityEngine;
 
-[Serializable]
 public class Locomotion
 {
-    [SerializeField, Min(0)]
     private float _speed = 1.0f;
 
     public Vector2 Direction { get; private set; }
